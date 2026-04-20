@@ -3,43 +3,42 @@ let shareData = {};
 
 function shareItem(url, title, type) {
   shareData = { url, title, type };
-  document.getElementById('share-modal').classList.add('active');
+  const modal = document.getElementById('share-modal');
+  modal.classList.add('active');
+  // 生成二维码
+  generateQR(shareData.url || window.location.href);
 }
 
 function closeShareModal() {
   document.getElementById('share-modal').classList.remove('active');
 }
 
-// 浏览器原生分享（手机端弹出系统分享菜单）
-function shareNative(platform) {
+// 生成二维码（使用开源 qrcode.js CDN，无需 API key）
+function generateQR(text) {
+  const box = document.getElementById('qr-container');
+  box.innerHTML = '';
+  // 获取完整 URL（相对路径补全）
+  const fullUrl = new URL(text, window.location.href).href;
+  // 用 Google Chart API 生成二维码图片
+  const img = document.createElement('img');
+  img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(fullUrl)}`;
+  img.alt = '二维码';
+  img.style.cssText = 'width:160px;height:160px;border-radius:8px;margin:0.5rem auto;display:block;';
+  box.appendChild(img);
+}
+
+// 浏览器原生分享（手机端弹出系统分享菜单，可选微信/抖音/QQ等）
+function shareNative() {
   const url = shareData.url || window.location.href;
   const title = shareData.title || document.title;
-  const desc = document.querySelector('meta[name="description"]')?.content || '';
+  const fullUrl = new URL(url, window.location.href).href;
 
-  // Web Share API（手机浏览器）
   if (navigator.share) {
-    navigator.share({ title, text: desc, url }).catch(() => {});
-    closeShareModal();
-    return;
-  }
-
-  // 桌面端：平台跳转分享链接
-  const encodedTitle = encodeURIComponent(title);
-  const encodedUrl = encodeURIComponent(url);
-
-  const shareUrls = {
-    wechat:  null, // 微信需要扫码，单独处理
-    douyin:  `https://www.douyin.com/share/video/${encodeURIComponent(url)}`,
-    weibo:   `https://service.weibo.com/share/share.php?url=${encodedUrl}&title=${encodedTitle}`,
-    qq:      `https://connect.qq.com/widget/shareqq/index.html?url=${encodedUrl}&title=${encodedTitle}`,
-  };
-
-  if (platform === 'wechat') {
-    // 微信：提示用浏览器打开后在微信内分享
-    alert('📱 请用手机浏览器打开此页面，点击分享按钮 → 选择微信\n\n电脑端：复制链接后打开手机微信粘贴分享');
-    copyLink();
-  } else if (shareUrls[platform]) {
-    window.open(shareUrls[platform], '_blank', 'width=600,height=500');
+    navigator.share({
+      title: title,
+      text: `「${title}」- 慢时光的影子`,
+      url: fullUrl
+    }).catch(() => {});
   }
   closeShareModal();
 }
@@ -47,17 +46,27 @@ function shareNative(platform) {
 // 复制链接
 function copyLink() {
   const url = shareData.url || window.location.href;
-  navigator.clipboard.writeText(url).then(() => {
-    // 显示复制成功提示
-    const toast = document.createElement('div');
-    toast.textContent = '🔗 链接已复制！';
-    toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#3d3a36;color:#fff;padding:0.6rem 1.5rem;border-radius:2rem;font-size:0.9rem;z-index:9999;animation:fadeUp 2s forwards';
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2000);
+  const fullUrl = new URL(url, window.location.href).href;
+  navigator.clipboard.writeText(fullUrl).then(() => {
+    showToast('✅ 链接已复制！');
   }).catch(() => {
-    prompt('复制链接：', url);
+    prompt('复制链接：', fullUrl);
   });
   closeShareModal();
+}
+
+// 微信/抖音分享提示
+function shareWechatGuide() {
+  showToast('📱 扫描上方二维码 → 用微信/抖音扫一扫即可分享');
+}
+
+// 显示轻提示
+function showToast(msg) {
+  const toast = document.createElement('div');
+  toast.textContent = msg;
+  toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#3d3a36;color:#fff;padding:0.6rem 1.5rem;border-radius:2rem;font-size:0.9rem;z-index:9999;animation:fadeUp 2s forwards';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
 }
 
 // ===== 灯箱（大图预览）=====
@@ -91,7 +100,7 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       navLinks.forEach(link => link.classList.remove('active'));
-      const active = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+      const active = document.querySelector(`.share-icon.nav-item[href="#${entry.target.id}"]`);
       if (active) active.classList.add('active');
     }
   });
