@@ -2,65 +2,58 @@
 let shareData = {};
 
 function shareItem(url, title, type) {
-  shareData = { url, title, type };
-  const modal = document.getElementById('share-modal');
-  modal.classList.add('active');
-  // 生成二维码
-  generateQR(shareData.url || window.location.href);
+  shareData = { url: window.location.href, title, type };
+  document.getElementById('share-modal').classList.add('active');
+  generateQR(shareData.url);
 }
 
 function closeShareModal() {
   document.getElementById('share-modal').classList.remove('active');
+  const box = document.getElementById('qr-container');
+  if (box) box.innerHTML = '';
 }
 
-// 生成二维码（使用开源 qrcode.js CDN，无需 API key）
 function generateQR(text) {
   const box = document.getElementById('qr-container');
   box.innerHTML = '';
-  // 获取完整 URL（相对路径补全）
-  const fullUrl = new URL(text, window.location.href).href;
-  // 用 Google Chart API 生成二维码图片
-  const img = document.createElement('img');
-  img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(fullUrl)}`;
-  img.alt = '二维码';
-  img.style.cssText = 'width:160px;height:160px;border-radius:8px;margin:0.5rem auto;display:block;';
-  box.appendChild(img);
+  if (typeof QRCode !== 'undefined') {
+    new QRCode(box, {
+      text: text,
+      width: 160,
+      height: 160,
+      colorDark: '#3d3a36',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } else {
+    box.innerHTML = '<span style="color:#999;font-size:0.8rem">二维码加载中…</span>';
+    setTimeout(() => generateQR(text), 1000);
+  }
 }
 
-// 浏览器原生分享（手机端弹出系统分享菜单，可选微信/抖音/QQ等）
 function shareNative() {
   const url = shareData.url || window.location.href;
   const title = shareData.title || document.title;
-  const fullUrl = new URL(url, window.location.href).href;
-
   if (navigator.share) {
     navigator.share({
       title: title,
-      text: `「${title}」- 慢时光的影子`,
-      url: fullUrl
+      text: '「' + title + '」- 慢时光的影子',
+      url: url
     }).catch(() => {});
   }
   closeShareModal();
 }
 
-// 复制链接
 function copyLink() {
   const url = shareData.url || window.location.href;
-  const fullUrl = new URL(url, window.location.href).href;
-  navigator.clipboard.writeText(fullUrl).then(() => {
+  navigator.clipboard.writeText(url).then(() => {
     showToast('✅ 链接已复制！');
   }).catch(() => {
-    prompt('复制链接：', fullUrl);
+    prompt('复制链接：', url);
   });
   closeShareModal();
 }
 
-// 微信/抖音分享提示
-function shareWechatGuide() {
-  showToast('📱 扫描上方二维码 → 用微信/抖音扫一扫即可分享');
-}
-
-// 显示轻提示
 function showToast(msg) {
   const toast = document.createElement('div');
   toast.textContent = msg;
@@ -76,7 +69,7 @@ function openLightbox(src, title, desc) {
   document.getElementById('lightbox-title').textContent = title;
   document.getElementById('lightbox-desc').textContent = desc || '';
   document.getElementById('lightbox-share-btn').innerHTML =
-    `<span class="share-btn" onclick="shareItem('${src}', '${title}', 'photo')">📤 分享</span>`;
+    '<span class="share-btn" onclick="shareItem(\'' + src + '\', \'' + title + '\', \'photo\')">📤 分享</span>';
   lb.classList.add('active');
 }
 
@@ -84,7 +77,6 @@ function closeLightbox() {
   document.getElementById('lightbox').classList.remove('active');
 }
 
-// ESC 关闭弹窗
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     closeLightbox();
@@ -100,7 +92,7 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       navLinks.forEach(link => link.classList.remove('active'));
-      const active = document.querySelector(`.share-icon.nav-item[href="#${entry.target.id}"]`);
+      const active = document.querySelector('.nav-item[href="#' + entry.target.id + '"]');
       if (active) active.classList.add('active');
     }
   });
