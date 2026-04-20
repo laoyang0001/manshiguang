@@ -92,3 +92,4 @@ A: 在 GitHub 仓库 Settings → Pages → Custom domain 填入你的域名即�
 ---
 
 有问题随时找我 😊
+# manshiguang.github.io
