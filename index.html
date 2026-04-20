@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 微信/抖音分享卡片信息 -->
+  <meta property="og:title" content="慢时光的影子">
+  <meta property="og:description" content="影像 · 音乐 · 视频 — 记录生活里值得留下的片刻">
+  <meta property="og:image" content="images/cover.jpg">
+  <meta property="og:url" content="https://laoyang0001.github.io">
+  <meta property="og:type" content="website">
+  <title>慢时光的影子</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 顶部封面 -->
+  <header class="hero">
+    <div class="hero-overlay">
+      <h1>慢时光的影子</h1>
+      <p>影像 · 音乐 · 视频</p>
+    </div>
+  </header>
+
+  <!-- 导航 -->
+  <nav class="nav">
+    <a href="#photos" class="nav-item active">📷 图片</a>
+    <a href="#videos" class="nav-item">🎬 视频</a>
+    <a href="#music" class="nav-item">🎵 音乐</a>
+  </nav>
+
+  <main>
+
+    <!-- 图片区 -->
+    <section id="photos" class="section">
+      <h2 class="section-title">📷 影像</h2>
+      <div class="photo-grid">
+        <!-- 每张图片复制一个 .photo-card -->
+        <div class="photo-card">
+          <img src="images/photo1.jpg" alt="作品标题" loading="lazy">
+          <div class="card-caption">作品标题</div>
+        </div>
+        <div class="photo-card">
+          <img src="images/photo2.jpg" alt="作品标题" loading="lazy">
+          <div class="card-caption">作品标题</div>
+        </div>
+        <div class="photo-card">
+          <img src="images/photo3.jpg" alt="作品标题" loading="lazy">
+          <div class="card-caption">作品标题</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 视频区 -->
+    <section id="videos" class="section">
+      <h2 class="section-title">🎬 视频</h2>
+      <div class="video-grid">
+        <!-- 把 B站/抖音视频链接替换到 src 里 -->
+        <!-- B站嵌入格式：https://player.bilibili.com/player.html?bvid=你的BV号 -->
+        <div class="video-card">
+          <div class="video-wrap">
+            <iframe src="https://player.bilibili.com/player.html?bvid=BV1xx411c7mD"
+              scrolling="no" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="card-caption">视频标题</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 音乐区 -->
+    <section id="music" class="section">
+      <h2 class="section-title">🎵 音乐</h2>
+      <div class="music-list">
+        <!-- 每首歌复制一个 .music-item -->
+        <div class="music-item">
+          <div class="music-info">
+            <div class="music-title">歌曲名称</div>
+            <div class="music-desc">作词/作曲/演唱 · 2024</div>
+          </div>
+          <audio controls preload="none">
+            <source src="music/song1.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+        <div class="music-item">
+          <div class="music-info">
+            <div class="music-title">歌曲名称</div>
+            <div class="music-desc">作词/作曲/演唱 · 2024</div>
+          </div>
+          <audio controls preload="none">
+            <source src="music/song2.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 慢时光的影子 · 用心记录每一刻</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+/* ===== 全局 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", serif;
+  background: #faf8f5;
+  color: #3d3a36;
+  line-height: 1.8;
+}
+
+/* ===== 封面 ===== */
+.hero {
+  width: 100%;
+  height: 70vh;
+  background: url('images/cover.jpg') center/cover no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-overlay {
+  background: rgba(0,0,0,0.35);
+  padding: 2rem 3rem;
+  border-radius: 4px;
+  text-align: center;
+  color: #fff;
+}
+.hero-overlay h1 {
+  font-size: 2.4rem;
+  font-weight: normal;
+  letter-spacing: 0.25em;
+  margin-bottom: 0.5rem;
+}
+.hero-overlay p {
+  font-size: 1rem;
+  letter-spacing: 0.4em;
+  opacity: 0.8;
+}
+
+/* ===== 导航 ===== */
+.nav {
+  position: sticky;
+  top: 0;
+  background: rgba(250,248,245,0.96);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  border-bottom: 1px solid #e8e3dc;
+  z-index: 100;
+}
+.nav-item {
+  text-decoration: none;
+  color: #8c7b6b;
+  font-size: 1rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 2rem;
+  transition: all 0.3s;
+}
+.nav-item:hover, .nav-item.active {
+  background: #8c7b6b;
+  color: #fff;
+}
+
+/* ===== 主内容 ===== */
+main { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+.section { margin-bottom: 5rem; }
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: normal;
+  color: #6b5a4e;
+  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd5c8;
+}
+
+/* ===== 图片 ===== */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.photo-card {
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.photo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.photo-card img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+}
+.card-caption {
+  padding: 0.8rem 1rem;
+  font-size: 0.88rem;
+  color: #7a6a5a;
+  text-align: center;
+}
+
+/* ===== 视频 ===== */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+.video-card {
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.video-wrap {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 */
+}
+.video-wrap iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+/* ===== 音乐 ===== */
+.music-list { display: flex; flex-direction: column; gap: 1rem; }
+.music-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.music-info { flex: 1; min-width: 150px; }
+.music-title { font-size: 1rem; color: #3d3a36; }
+.music-desc { font-size: 0.8rem; color: #9a8a7a; margin-top: 0.2rem; }
+.music-item audio { height: 36px; flex: 2; min-width: 180px; }
+
+/* ===== 页脚 ===== */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  color: #b0a090;
+  font-size: 0.85rem;
+  border-top: 1px solid #ede8e0;
+}
+
+/* ===== 手机适配 ===== */
+@media (max-width: 600px) {
+  .hero-overlay h1 { font-size: 1.6rem; }
+  .nav { gap: 1rem; font-size: 0.9rem; }
+  main { padding: 2rem 1rem 4rem; }
+  .photo-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+  .video-grid { grid-template-columns: 1fr; }
+  .music-item { flex-direction: column; align-items: flex-start; }
+  .music-item audio { width: 100%; }
+}
