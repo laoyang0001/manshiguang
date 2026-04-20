@@ -156,12 +156,11 @@
   <!-- 分享弹窗 -->
   <div id="share-modal" class="lightbox" onclick="closeShareModal()">
     <div class="share-panel" onclick="event.stopPropagation()">
-      <div class="share-title">分享到</div>
+      <div class="share-title">📤 分享作品</div>
+      <div id="qr-container"></div>
+      <p style="text-align:center;color:#999;font-size:0.8rem;margin:0.3rem 0 0.8rem;">扫一扫分享到微信 / 抖音</p>
       <div class="share-icons">
-        <div class="share-icon" onclick="shareNative('wechat')">💬<span>微信</span></div>
-        <div class="share-icon" onclick="shareNative('douyin')">🎵<span>抖音</span></div>
-        <div class="share-icon" onclick="shareNative('weibo')">🔺<span>微博</span></div>
-        <div class="share-icon" onclick="shareNative('qq')">🐧<span>QQ</span></div>
+        <div class="share-icon" onclick="shareNative()">📱<span>系统分享</span></div>
         <div class="share-icon" onclick="copyLink()">🔗<span>复制链接</span></div>
       </div>
       <div class="share-close" onclick="closeShareModal()">取消</div>
